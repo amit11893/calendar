@@ -1,26 +1,32 @@
 import React from 'react';
-import logo from './logo.svg';
+import logo from './gclogo.png';
+import Navigator from './Components/Toolbar/Navigator';
+import ViewSwitcher from './Components/Toolbar/ViewSwitcher';
+import Calendar from './Components/Calendar/Calendar';
+import Week from './Components/Week/Week';
+import Month from './Components/Month/Month';
+import { connect } from 'react-redux';
+
 import './App.css';
 
-function App() {
+function App(props) {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+      <header className="toolbar">
+        <img src={logo} alt="logo" className="App-logo" />
+        <span className="title">Calender</span>
+        <Navigator />
+        <ViewSwitcher />
       </header>
+      <div className="container">
+        <Calendar />
+        {props.page === 'Month' ? <Month /> : <Week />}
+      </div>
     </div>
   );
 }
 
-export default App;
+const mapSTP = state => ({
+  page: state.page
+});
+export default connect(mapSTP, null)(App);

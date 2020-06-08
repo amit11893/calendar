@@ -1,0 +1,9 @@
+.month-day {
+  width: 12vw;
+  height: 15vh;
+  border: 1px solid #0d0d0d;
+}
+.month {
+  margin-top: 5vh;
+  margin-left: 2vw;
+}

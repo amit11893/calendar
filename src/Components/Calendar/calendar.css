@@ -1,0 +1,23 @@
+.calendar {
+  margin-top: 10vh;
+}
+table {
+  text-align: center;
+}
+
+.today {
+  border: 1px solid chartreuse;
+  border-radius: 100%;
+  background-color: blue;
+  color: white;
+}
+
+.cals {
+  display: flex;
+  justify-content: space-between;
+}
+
+.arrow {
+  font-weight: 400;
+  font-size: 22px;
+}

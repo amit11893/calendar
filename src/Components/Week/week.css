@@ -1,0 +1,13 @@
+/* .week-day {
+  width: 12vw;
+} */
+.week {
+  margin-top: 5vh;
+  margin-left: 2vw;
+}
+
+.hour {
+  width: 8vw;
+  height: 50px;
+  border: 1px solid #0d0d0d;
+}

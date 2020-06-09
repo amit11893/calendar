@@ -21,3 +21,8 @@ table {
   font-weight: 400;
   font-size: 22px;
 }
+
+.calendar-day button {
+  border: none;
+  background: none;
+}

@@ -1,26 +1,61 @@
 import moment from 'moment';
 
-let current = moment();
-const initial = {
-  page: 'Month',
-  current
-};
-const countReducer = function(state = initial, action) {
+let current;
+const countReducer = function(state, action) {
   switch (action.type) {
     case 'SWITCH':
       return { ...state, page: action.page };
-    case 'NEXT_WEEK':
-      current = state.current.add(7, 'd');
+    case 'NEXT':
+      if (state.page === 'Month') {
+        current = moment(state.current)
+          .clone()
+          .add(1, 'months');
+      } else {
+        current = moment(state.current)
+          .clone()
+          .add(7, 'd');
+      }
       return { ...state, current };
-    case 'NEXT_MONTH':
-      current = state.current.add(1, 'months');
+    case 'LAST':
+      if (state.page === 'Month') {
+        current = moment(state.current)
+          .clone()
+          .subtract(1, 'months');
+      } else {
+        current = moment(state.current)
+          .clone()
+          .subtract(7, 'd');
+      }
       return { ...state, current };
-    case 'LAST_WEEK':
-      current = state.current.subtract(7, 'd');
+    case 'CAL_NEXT':
+      current = moment(state.current)
+        .clone()
+        .add(1, 'months');
       return { ...state, current };
-    case 'LAST_MONTH':
-      current = state.current.subtract(1, 'months');
+    case 'CAL_LAST':
+      current = moment(state.current)
+        .clone()
+        .subtract(1, 'months');
       return { ...state, current };
+    case 'MOVE_DATE':
+      current = moment(state.current)
+        .clone()
+        .add(action.diff, 'd');
+      return { ...state, current };
+    case 'CREATE_EVENT':
+      let events = [...state.events, action.event];
+      return { ...state, events };
+    case 'DELETE_EVENT':
+      let evs = state.events.filter(event => {
+        return event.name !== action.name;
+      });
+      return { ...state, events: evs };
+    case 'CHANGE_EVENTS':
+      let showEvents = !state.showEvents;
+      return { ...state, showEvents };
+    case 'CHANGE_HOLIDAY':
+      let showHoliday = !state.showHoliday;
+      return { ...state, showHoliday };
     default:
       return state;
   }

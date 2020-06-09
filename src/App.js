@@ -6,8 +6,8 @@ import Calendar from './Components/Calendar/Calendar';
 import Week from './Components/Week/Week';
 import Month from './Components/Month/Month';
 import { connect } from 'react-redux';
-
 import './App.css';
+import Toggle from './Components/Toggle/Toggle';
 
 function App(props) {
   return (
@@ -19,7 +19,10 @@ function App(props) {
         <ViewSwitcher />
       </header>
       <div className="container">
-        <Calendar />
+        <div>
+          <Calendar />
+          <Toggle />
+        </div>
         {props.page === 'Month' ? <Month /> : <Week />}
       </div>
     </div>

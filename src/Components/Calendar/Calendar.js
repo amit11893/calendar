@@ -1,27 +1,27 @@
 import React from 'react';
 import moment from 'moment';
 import './calendar.css';
-
+import { connect } from 'react-redux';
 class Calendar extends React.Component {
   state = {
     weekdayshort: moment.weekdaysShort(),
-    dateObject: moment()
+    dateObject: this.props.current
   };
   daysInMonth = () => {
-    return this.state.dateObject.daysInMonth();
+    return moment(this.props.current).daysInMonth();
   };
   firstDayOfMonth = () => {
-    let dateObject = this.state.dateObject;
+    let dateObject = this.props.current;
     let firstDay = moment(dateObject)
       .startOf('month')
       .format('d');
     return firstDay;
   };
   currentDay = () => {
-    return this.state.dateObject.format('D');
+    return moment(this.props.current).format('DD');
   };
   currentMonth = () => {
-    return this.state.dateObject.format('MMMM');
+    return moment(this.props.current).format('MMMM');
   };
   render() {
     let blanks = [];
@@ -31,10 +31,10 @@ class Calendar extends React.Component {
     let daysInMonth = [];
     for (let d = 1; d <= this.daysInMonth(); d++) {
       let currentDay = d == this.currentDay() ? 'today' : '';
-      console.log(currentDay);
+      let diff = d - this.currentDay();
       daysInMonth.push(
         <td key={d} className={`calendar-day ${currentDay}`}>
-          {d}
+          <button onClick={d => this.props.moveToDate(diff)}>{d}</button>
         </td>
       );
     }
@@ -60,7 +60,11 @@ class Calendar extends React.Component {
       <div className="calendar">
         <div className="cals">
           {this.currentMonth()}{' '}
-          <span className="arrow">&lt;&nbsp;&nbsp;&gt;</span>
+          <span className="arrow">
+            <button onClick={() => this.props.moveLast()}>&lt;</button>
+            &nbsp;&nbsp;
+            <button onClick={() => this.props.moveNext()}>&gt;</button>
+          </span>
         </div>
         <table>
           <thead>
@@ -75,4 +79,26 @@ class Calendar extends React.Component {
   }
 }
 
-export default Calendar;
+const mapSTP = state => ({
+  current: state.current
+});
+
+const mapDispatchToProps = dispatch => {
+  return {
+    moveNext: () =>
+      dispatch({
+        type: 'CAL_NEXT'
+      }),
+    moveLast: () =>
+      dispatch({
+        type: 'CAL_LAST'
+      }),
+    moveToDate: x =>
+      dispatch({
+        type: 'MOVE_DATE',
+        diff: x
+      })
+  };
+};
+
+export default connect(mapSTP, mapDispatchToProps)(Calendar);

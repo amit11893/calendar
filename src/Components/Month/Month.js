@@ -29,13 +29,32 @@ class Month extends React.Component {
     for (let i = 0; i < this.firstDayOfMonth(); i++) {
       blanks.push(<td className="calendar-day empty">{''}</td>);
     }
+
     let daysInMonth = [];
     for (let d = 1; d <= this.daysInMonth(); d++) {
-      let currentDay = d == this.currentDay() ? 'today' : '';
-      console.log(currentDay);
+      let hldys = this.props.holidays.filter(hdys => {
+        let x = d;
+        if (x < 10) x = '0' + x;
+        return hdys.Date === x + this.props.current.format('MMYY');
+      });
+      let evts = this.props.events.filter(event => {
+        let y = d;
+        if (y < 10) y = '0' + y;
+        return event.time.slice(0, 6) === y + this.props.current.format('MMYY');
+      });
       daysInMonth.push(
         <td key={d} className="month-day">
           {d}
+          {this.props.showHoliday &&
+            hldys.map(hl => <div className="month-holiday">{hl.name}</div>)}
+          {this.props.showEvents &&
+            evts.map((event, i) => (
+              <span className="event-name" key={i}>
+                <button onClick={e => this.props.deleteEvent(e, event.name)}>
+                  {event.name}
+                </button>
+              </span>
+            ))}
         </td>
       );
     }
@@ -72,19 +91,21 @@ class Month extends React.Component {
   }
 }
 
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     // dispatching plain actions
-//     switchPage: value =>
-//       dispatch({
-//         page: value,
-//         type: 'SWITCH'
-//       })
-//   };
-// };
-const mapSTP = state => {
+const mapDispatchToProps = dispatch => {
   return {
-    current: state.current
+    deleteEvent: (event, name) => {
+      event.stopPropagation();
+      dispatch({ type: 'DELETE_EVENT', name });
+    }
   };
 };
-export default connect(mapSTP, null)(Month);
+const mapSTP = state => {
+  return {
+    current: state.current,
+    events: state.events,
+    holidays: state.holidays,
+    showEvents: state.showEvents,
+    showHoliday: state.showHoliday
+  };
+};
+export default connect(mapSTP, mapDispatchToProps)(Month);

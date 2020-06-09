@@ -4,10 +4,35 @@
 .week {
   margin-top: 5vh;
   margin-left: 2vw;
+  display: flex;
 }
 
 .hour {
   width: 8vw;
-  height: 50px;
+  height: 7vh;
   border: 1px solid #0d0d0d;
+  padding: 0;
+  margin: 0;
+}
+
+.table-week {
+  border-spacing: 0;
+}
+
+/* .hours {
+  margin-top: 0vh;
+} */
+
+.hour-time {
+  margin-top: 4.75vh;
+}
+
+.event-name {
+  display: block;
+  background-color: green;
+}
+
+.holiday {
+  display: block;
+  background-color: lightsalmon;
 }

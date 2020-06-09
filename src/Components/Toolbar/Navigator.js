@@ -1,36 +1,38 @@
 import React from 'react';
 import './navigator.css';
-// import moment from 'moment';
+import moment from 'moment';
 import { connect } from 'react-redux';
 
-function Navigator(props) {
-  return (
-    <div className="navigator">
-      <span className="text">Today</span>
-      <span className="arrow">
-        <span onClick={() => props.moveLast()}>&lt;</span> &nbsp;{' '}
-        <span onClick={() => props.moveNext()}>&gt;</span>
-      </span>
-      <span className="title">
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        {' ' +
-          props.current.format('MMMM') +
-          '  ' +
-          props.current.format('YYYY')}
-      </span>
-    </div>
-  );
+class Navigator extends React.Component {
+  //console.log('curr : ', props.current);
+  render() {
+    return (
+      <div className="navigator">
+        <span className="text">Today</span>
+        <span className="arrow">
+          <button onClick={() => this.props.moveLast()}>&lt;</button> {'  '}
+          <button onClick={() => this.props.moveNext()}>&gt;</button>
+        </span>
+        <span className="title">
+          &nbsp;&nbsp;&nbsp;
+          {' ' +
+            moment(this.props.current).format('MMMM') +
+            '  ' +
+            moment(this.props.current).format('YYYY')}
+        </span>
+      </div>
+    );
+  }
 }
 const mapDispatchToProps = dispatch => {
   return {
-    // dispatching plain actions
     moveNext: () =>
       dispatch({
-        type: 'NEXT_WEEK'
+        type: 'NEXT'
       }),
     moveLast: () =>
       dispatch({
-        type: 'NEXT_WEEK'
+        type: 'LAST'
       })
   };
 };
